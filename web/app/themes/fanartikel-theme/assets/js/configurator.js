@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Konstanten für die Skalierung (in mm)
     const BALL_SIZE_MM = 80;
-    const PRINT_AREA_MM = 45;
+    const PRINT_AREA_MM = 40;
     const CANVAS_SIZE = 500;
 
     // Feinjustierung basierend auf dem Mockup Bild
