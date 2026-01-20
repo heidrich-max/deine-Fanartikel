@@ -82,6 +82,8 @@ function fanartikel_scripts()
     // Daten für den Konfigurator bereitstellen
     wp_localize_script('fanartikel-configurator', 'fanartikelConfig', array(
         'mockupUrl' => get_template_directory_uri() . '/assets/images/christmas-ball.png',
+        'backgroundUrl' => get_template_directory_uri() . '/assets/images/configurator/background.png',
+        'ballsUrlBase' => get_template_directory_uri() . '/assets/images/configurator/balls/',
         'ajaxUrl' => admin_url('admin-ajax.php')
     ));
 

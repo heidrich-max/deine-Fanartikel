@@ -62,8 +62,8 @@ document.addEventListener('DOMContentLoaded', function () {
         absolutePositioned: true
     });
 
-    // Mockup Hintergrund laden
-    fabric.Image.fromURL(fanartikelConfig.mockupUrl, function (img) {
+    // 1. Hintergrund laden (Statisch)
+    fabric.Image.fromURL(fanartikelConfig.backgroundUrl, function (img) {
         img.set({
             selectable: false,
             evented: false,
@@ -71,34 +71,49 @@ document.addEventListener('DOMContentLoaded', function () {
             scaleY: canvas.height / img.height
         });
         canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+    });
 
-        // Kugel-Overlay für dynamische Färbung erstellen
-        fabric.Image.fromURL(fanartikelConfig.mockupUrl, function (overlay) {
-            overlay.set({
+    // 2. Kugel-Layer initialisieren (Dynamisch)
+    window.productLayer = null;
+
+    window.setBallColor = function (hex, filename) {
+        const imageUrl = fanartikelConfig.ballsUrlBase + filename;
+
+        // Swatches UI Update
+        document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+        const activeSwatch = Array.from(document.querySelectorAll('.color-swatch')).find(s => s.style.backgroundColor === hex || s.getAttribute('style').includes(hex));
+        if (activeSwatch) activeSwatch.classList.add('active');
+
+        // Neues Bild laden
+        fabric.Image.fromURL(imageUrl, function (img) {
+            // Falls bereits ein Layer existiert, entfernen
+            if (window.productLayer) {
+                canvas.remove(window.productLayer);
+            }
+
+            img.set({
                 selectable: false,
                 evented: false,
-                scaleX: canvas.width / overlay.width,
-                scaleY: canvas.height / overlay.height,
-                clipPath: new fabric.Circle({
-                    radius: BALL_DIAMETER_PX / 2,
-                    left: CENTER_X,
-                    top: CENTER_Y,
-                    originX: 'center',
-                    originY: 'center',
-                    absolutePositioned: true
-                })
+                scaleX: canvas.width / img.width,
+                scaleY: canvas.height / img.height,
+                originX: 'left',
+                originY: 'top',
+                left: 0,
+                top: 0
             });
 
-            // Initial-Farbe (Grün)
-            window.ballOverlay = overlay;
-            canvas.add(overlay);
-            // Das Overlay muss hinter dem Guide und den Designs liegen
-            overlay.moveTo(0);
+            window.productLayer = img;
+            canvas.add(img);
 
-            // Initial keine Filter, da das Bild schon grün ist
-            // Aber wir bereiten setBallColor vor
-        });
-    });
+            // Layer nach ganz hinten verschieben (aber vor das BackgroundImage)
+            img.sendToBack();
+            canvas.renderAll();
+        }, { crossOrigin: 'anonymous' });
+    };
+
+    // Initial-Farbe (Grün) laden
+    // Hinweis: Falls green.png noch nicht existiert, nutzen wir das alte Bild als Fallback
+    setBallColor('#2e7d32', 'green.png');
 
     // Hilfslinie
     const guideCircle = new fabric.Circle({
@@ -114,29 +129,6 @@ document.addEventListener('DOMContentLoaded', function () {
         evented: false
     });
     canvas.add(guideCircle);
-
-    // Ball Farbe ändern
-    window.setBallColor = function (hex) {
-        if (!window.ballOverlay) return;
-
-        // Swatches UI Update
-        document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
-        const activeSwatch = Array.from(document.querySelectorAll('.color-swatch')).find(s => s.style.backgroundColor === hex || s.getAttribute('style').includes(hex));
-        if (activeSwatch) activeSwatch.classList.add('active');
-
-        // Filter anwenden
-        // Wir nutzen BlendColor mit 'multiply' oder 'tint'
-        // 'tint' ist oft besser für Seidenmatt-Oberflächen
-        window.ballOverlay.filters = [
-            new fabric.Image.filters.BlendColor({
-                color: hex,
-                mode: 'tint',
-                alpha: 0.6 // Transparenz anpassen, damit Lichter erhalten bleiben
-            })
-        ];
-        window.ballOverlay.applyFilters();
-        canvas.renderAll();
-    };
 
     // Text hinzufügen
     window.addTextToProduct = function (text = 'Dein Text') {
