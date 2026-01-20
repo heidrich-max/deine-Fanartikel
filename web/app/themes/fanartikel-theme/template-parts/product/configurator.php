@@ -46,6 +46,38 @@
                     </div>
                 </div>
 
+                <!-- Kugel Farbe -->
+                <div class="control-group"
+                    style="background: #222; padding: 1rem; border-radius: 8px; border: 1px solid #333; flex: 1; min-width: 250px;">
+                    <h4 style="margin: 0 0 1rem 0; color: #fff;">Kugel-Farbe</h4>
+                    <div class="color-swatches"
+                        style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem;">
+                        <?php
+                        $ball_colors = [
+                            '#2e7d32' => 'Grün',
+                            '#c62828' => 'Rot',
+                            '#1565c0' => 'Blau',
+                            '#f9a825' => 'Gold',
+                            '#37474f' => 'Anthrazit',
+                            '#f48fb1' => 'Rosa',
+                            '#6a1b9a' => 'Lila',
+                            '#ef6c00' => 'Orange',
+                            '#ffffff' => 'Weiß',
+                            '#9e9e9e' => 'Silber',
+                            '#000000' => 'Schwarz',
+                            '#8d6e63' => 'Kupfer',
+                            '#fdd835' => 'Gelb',
+                            '#b2ff59' => 'Hellgrün'
+                        ];
+                        foreach ($ball_colors as $hex => $name): ?>
+                            <div class="color-swatch" onclick="setBallColor('<?php echo $hex; ?>')"
+                                title="<?php echo $name; ?>"
+                                style="width: 25px; height: 25px; border-radius: 50%; background: <?php echo $hex; ?>; cursor: pointer; border: 2px solid #444; transition: transform 0.2s;">
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
                 <!-- Bild Upload -->
                 <div class="control-group"
                     style="background: #222; padding: 1rem; border-radius: 8px; border: 1px solid #333; flex: 1; min-width: 250px;">
@@ -93,7 +125,7 @@
         max-height: 95vh;
         overflow-y: auto;
         border: 1px solid #333;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
     }
 
     .modal-close {
@@ -129,5 +161,15 @@
     .canvas-container {
         margin: 0 auto !important;
         max-width: 100%;
+    }
+
+    .color-swatch:hover {
+        transform: scale(1.2);
+        border-color: #fff !important;
+    }
+
+    .color-swatch.active {
+        border-color: #2e7d32 !important;
+        box-shadow: 0 0 10px rgba(46, 125, 50, 0.5);
     }
 </style>
