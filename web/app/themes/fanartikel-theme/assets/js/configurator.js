@@ -12,6 +12,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const PRINT_AREA_MM = 45;
     const CANVAS_SIZE = 500;
 
+    // Feinjustierung basierend auf dem Mockup Bild
+    const BALL_DIAMETER_PX = 390; // Der tatsächliche Durchmesser der Kugel im Bild (ohne Aufhänger)
+    const CENTER_X = CANVAS_SIZE / 2;
+    const CENTER_Y = 292; // Mittig auf der Kugel (nach unten verschoben wegen Aufhänger)
+
     // Canvas Initialisierung
     const canvas = new fabric.Canvas('product-canvas', {
         width: CANVAS_SIZE,
@@ -19,12 +24,12 @@ document.addEventListener('DOMContentLoaded', function () {
         backgroundColor: 'transparent'
     });
 
-    // Clipping Bereich Objekt (45/80 des Mockups)
-    const printAreaPx = (PRINT_AREA_MM / BALL_SIZE_MM) * CANVAS_SIZE;
+    // Clipping Bereich Objekt (45/80 der Kugelgröße)
+    const printAreaPx = (PRINT_AREA_MM / BALL_SIZE_MM) * BALL_DIAMETER_PX;
     const clipCircle = new fabric.Circle({
         radius: printAreaPx / 2,
-        left: CANVAS_SIZE / 2,
-        top: CANVAS_SIZE / 2,
+        left: CENTER_X,
+        top: CENTER_Y,
         originX: 'center',
         originY: 'center',
         absolutePositioned: true
@@ -44,12 +49,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // Hilfslinie für den Druckbereich
     const guideCircle = new fabric.Circle({
         radius: printAreaPx / 2,
-        left: CANVAS_SIZE / 2,
-        top: CANVAS_SIZE / 2,
+        left: CENTER_X,
+        top: CENTER_Y,
         originX: 'center',
         originY: 'center',
         fill: 'transparent',
-        stroke: 'rgba(255,255,255,0.3)',
+        stroke: 'rgba(255,255,255,0.4)',
         strokeDashArray: [5, 5],
         selectable: false,
         evented: false
@@ -65,8 +70,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const fontFamily = document.getElementById('text-font-family').value || 'Inter';
 
         const textObj = new fabric.IText(text, {
-            left: CANVAS_SIZE / 2,
-            top: CANVAS_SIZE / 2,
+            left: CENTER_X,
+            top: CENTER_Y,
             fontFamily: fontFamily,
             fontSize: 30,
             fill: color,
@@ -106,8 +111,8 @@ document.addEventListener('DOMContentLoaded', function () {
             fabric.Image.fromURL(data, function (img) {
                 img.scaleToWidth(100);
                 img.set({
-                    left: CANVAS_SIZE / 2,
-                    top: CANVAS_SIZE / 2,
+                    left: CENTER_X,
+                    top: CENTER_Y,
                     originX: 'center',
                     originY: 'center',
                     clipPath: clipCircle
