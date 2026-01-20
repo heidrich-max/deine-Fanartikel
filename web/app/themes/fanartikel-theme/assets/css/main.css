@@ -7,14 +7,17 @@
    CSS Variables
    ======================================== */
 :root {
-    --color-primary: #e63946;
-    --color-primary-dark: #d62828;
-    --color-secondary: #1d3557;
-    --color-accent: #f1faee;
-    --color-text: #2b2d42;
-    --color-text-light: #8d99ae;
+    --color-primary: #1a4d2e;
+    --color-primary-dark: #0f2818;
+    --color-primary-light: #2d7a4f;
+    --color-secondary: #0a1612;
+    --color-accent: #d4f1e8;
+    --color-accent-bright: #4ade80;
+    --color-text: #1a1a1a;
+    --color-text-light: #6b7280;
     --color-bg: #ffffff;
-    --color-bg-light: #f8f9fa;
+    --color-bg-light: #f8fdf9;
+    --color-bg-dark: #0f2818;
 
     --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
@@ -27,12 +30,15 @@
     --radius-sm: 0.5rem;
     --radius-md: 1rem;
     --radius-lg: 1.5rem;
+    --radius-xl: 2rem;
 
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+    --shadow-sm: 0 2px 8px rgba(26, 77, 46, 0.08);
+    --shadow-md: 0 4px 16px rgba(26, 77, 46, 0.12);
+    --shadow-lg: 0 8px 32px rgba(26, 77, 46, 0.16);
+    --shadow-xl: 0 20px 50px rgba(26, 77, 46, 0.25);
 
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ========================================
@@ -161,7 +167,7 @@ a:hover {
     min-height: 600px;
     display: flex;
     align-items: center;
-    background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+    background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary-dark) 50%, var(--color-primary) 100%);
     color: white;
     overflow: hidden;
 }
@@ -216,12 +222,14 @@ a:hover {
 .btn-primary {
     background: white;
     color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 .btn-primary:hover {
-    background: var(--color-accent);
+    background: var(--color-accent-bright);
+    color: white;
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-xl);
 }
 
 .btn-secondary {
@@ -233,6 +241,7 @@ a:hover {
 .btn-secondary:hover {
     background: white;
     color: var(--color-primary);
+    transform: translateY(-2px);
 }
 
 /* ========================================
@@ -277,12 +286,32 @@ section {
     padding: var(--spacing-lg);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
+    transition: var(--transition-slow);
+    border: 1px solid rgba(26, 77, 46, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent-bright) 100%);
+    transform: scaleX(0);
     transition: var(--transition);
 }
 
 .product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-12px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--color-primary);
+}
+
+.product-card:hover::before {
+    transform: scaleX(1);
 }
 
 .product-icon {
@@ -326,8 +355,17 @@ section {
    Konfigurator Section
    ======================================== */
 .konfigurator-section {
-    background: var(--color-secondary);
+    background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-bg-dark) 100%);
     color: white;
+    position: relative;
+}
+
+.konfigurator-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="1200" height="600" fill="url(%23dots)"/></svg>');
+    opacity: 0.5;
 }
 
 .konfigurator-content {
@@ -362,14 +400,18 @@ section {
 }
 
 .konfigurator-features svg {
-    color: var(--color-primary);
+    color: var(--color-accent-bright);
     flex-shrink: 0;
 }
 
 .konfigurator-image {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-xl);
     padding: var(--spacing-md);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 1;
 }
 
 .konfigurator-placeholder {
@@ -460,7 +502,7 @@ section {
    Footer
    ======================================== */
 .site-footer {
-    background: var(--color-secondary);
+    background: linear-gradient(180deg, var(--color-bg-dark) 0%, var(--color-secondary) 100%);
     color: white;
     padding: var(--spacing-xl) 0 var(--spacing-md);
 }
@@ -495,7 +537,7 @@ section {
 
 .footer-menu a:hover {
     opacity: 1;
-    color: var(--color-primary);
+    color: var(--color-accent-bright);
 }
 
 .footer-bottom {
