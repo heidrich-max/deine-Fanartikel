@@ -21,7 +21,7 @@
                     style="padding: 0.5rem; border-radius: 4px; border: 1px solid #444; background: #333; color: #fff;">
 
                 <div style="display: flex; gap: 0.5rem; align-items: center;">
-                    <label style="color: #ccc; font-size: 0.8rem;">Farbe:</label>
+                    <label style="color: #ccc; font-size: 0.8rem;">Druckfarbe (Text & Logo):</label>
                     <input type="color" id="text-color-picker" value="#ffffff"
                         style="border: none; background: none; width: 40px; height: 30px; cursor: pointer;">
 

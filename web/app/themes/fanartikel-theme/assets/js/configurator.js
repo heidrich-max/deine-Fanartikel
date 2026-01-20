@@ -83,13 +83,31 @@ document.addEventListener('DOMContentLoaded', function () {
         canvas.setActiveObject(textObj);
     };
 
-    // Live-Updates für selektierte Objekte
+    // Live-Updates für selektierte Objekte (Text & Logos)
     document.getElementById('text-color-picker').addEventListener('input', function (e) {
         const activeObject = canvas.getActiveObject();
-        if (activeObject && activeObject.type === 'i-text') {
-            activeObject.set('fill', e.target.value);
-            canvas.renderAll();
+        if (!activeObject) return;
+
+        const color = e.target.value;
+
+        if (activeObject.type === 'i-text') {
+            activeObject.set('fill', color);
+        } else if (activeObject.type === 'image' && activeObject !== canvas.backgroundImage) {
+            // Farbanpassung für monochrome Logos via Filter
+            activeObject.filters = [
+                new fabric.Image.filters.RemoveColor({
+                    color: '#FFFFFF',
+                    distance: 0.1
+                }),
+                new fabric.Image.filters.BlendColor({
+                    color: color,
+                    mode: 'tint',
+                    alpha: 1
+                })
+            ];
+            activeObject.applyFilters();
         }
+        canvas.renderAll();
     });
 
     document.getElementById('text-font-family').addEventListener('change', function (e) {
@@ -100,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Bild-Upload Funktion
+    // Bild-Upload Funktion (Logo)
     window.uploadImageToProduct = function (e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -109,6 +127,22 @@ document.addEventListener('DOMContentLoaded', function () {
         reader.onload = function (f) {
             const data = f.target.result;
             fabric.Image.fromURL(data, function (img) {
+                const color = document.getElementById('text-color-picker').value || '#ffffff';
+
+                // Hintergrund entfernen (Weiß) & Monochrome Färbung
+                img.filters = [
+                    new fabric.Image.filters.RemoveColor({
+                        color: '#FFFFFF',
+                        distance: 0.1 // Schwellenwert für Grautöne/Artefakte
+                    }),
+                    new fabric.Image.filters.BlendColor({
+                        color: color,
+                        mode: 'tint',
+                        alpha: 1
+                    })
+                ];
+                img.applyFilters();
+
                 img.scaleToWidth(100);
                 img.set({
                     left: CENTER_X,
