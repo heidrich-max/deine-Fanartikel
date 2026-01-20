@@ -6,7 +6,7 @@
 
 <div class="product-configurator-container">
     <div class="canvas-wrapper"
-        style="position: relative; width: 500px; height: 500px; margin: 0 auto; background: #1a1a1a; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        style="position: relative; width: 500px; height: 500px; margin: 0 auto; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
         <canvas id="product-canvas"></canvas>
     </div>
 

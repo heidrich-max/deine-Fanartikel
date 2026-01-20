@@ -12,10 +12,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const PRINT_AREA_MM = 45;
     const CANVAS_SIZE = 500;
 
-    // Feinjustierung basierend auf dem Mockup Bild
-    const BALL_DIAMETER_PX = 390; // Der tatsächliche Durchmesser der Kugel im Bild (ohne Aufhänger)
+    // Feinjustierung basierend auf dem Mockup Bild (Festliche Szene)
+    const BALL_DIAMETER_PX = 360; // Etwas kleinerer Fokusbereich auf der Kugel
     const CENTER_X = CANVAS_SIZE / 2;
-    const CENTER_Y = 292; // Mittig auf der Kugel (nach unten verschoben wegen Aufhänger)
+    const CENTER_Y = 310; // Weiter unten platziert wegen der Perspektive im neuen Bild
 
     // Canvas Initialisierung
     const canvas = new fabric.Canvas('product-canvas', {
