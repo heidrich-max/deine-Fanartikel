@@ -171,6 +171,36 @@ document.addEventListener('DOMContentLoaded', function () {
         return data;
     };
 
+    // Modal Steuerung
+    window.openConfiguratorModal = function () {
+        const modal = document.getElementById('configurator-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Scrollen verhindern
+
+            // Wichtig: Fabric.js muss wissen, dass sich die Position geändert hat
+            if (canvas) {
+                canvas.calcOffset();
+            }
+        }
+    };
+
+    window.closeConfiguratorModal = function () {
+        const modal = document.getElementById('configurator-modal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = ''; // Scrollen wieder erlauben
+        }
+    };
+
+    // Schließen bei Klick auf Overlay
+    document.addEventListener('click', function (e) {
+        const modal = document.getElementById('configurator-modal');
+        if (e.target === modal) {
+            closeConfiguratorModal();
+        }
+    });
+
     // Hilfsfunktionen: Löschen
     window.removeSelectedObject = function () {
         const activeObjects = canvas.getActiveObjects();

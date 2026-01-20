@@ -20,7 +20,8 @@ get_header();
                 <p class="hero-subtitle">Fanartikel bedrucken lassen ab 5 Stück. Gestalte deine individuellen Fanschals,
                     Mützen und mehr mit unserem Online-Konfigurator.</p>
                 <div class="hero-buttons">
-                    <a href="#konfigurator" class="btn btn-primary">Jetzt gestalten</a>
+                    <a href="javascript:void(0)" onclick="openConfiguratorModal()" class="btn btn-primary">Jetzt
+                        gestalten</a>
                     <a href="#produkte" class="btn btn-secondary">Produkte entdecken</a>
                 </div>
             </div>
@@ -147,7 +148,8 @@ get_header();
                             Live-Vorschau
                         </li>
                     </ul>
-                    <a href="#" class="btn btn-primary">Zum Konfigurator</a>
+                    <a href="javascript:void(0)" onclick="openConfiguratorModal()" class="btn btn-primary">Zum
+                        Konfigurator</a>
                 </div>
                 <div class="konfigurator-image">
                     <?php get_template_part('template-parts/product/configurator'); ?>
