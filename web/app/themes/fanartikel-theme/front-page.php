@@ -107,14 +107,8 @@ get_header();
     </section>
 
     <!-- Konfigurator Section -->
-    <section id="konfigurator" class="konfigurator-section"
-        style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/christmas-bg.png'); background-size: cover; background-position: center; position: relative;">
-        <!-- Overlay for better readability -->
-        <div
-            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 30, 10, 0.85); z-index: 1;">
-        </div>
-
-        <div class="container position-relative" style="z-index: 2; padding: 100px 0;">
+    <section id="konfigurator" class="konfigurator-section bg-dark py-5">
+        <div class="container py-lg-5">
             <div class="row align-items-center">
                 <div class="col-lg-5 mb-5 mb-lg-0">
                     <div class="konfigurator-text">
