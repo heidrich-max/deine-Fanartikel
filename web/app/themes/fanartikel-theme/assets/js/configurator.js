@@ -3,6 +3,30 @@
  * Basiert auf Fabric.js
  */
 
+// Globale Funktionen für das Modal (müssen sofort verfügbar sein)
+window.openConfiguratorModal = function () {
+    const modal = document.getElementById('configurator-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+
+        // Fabric.js Canvas-Offset aktualisieren, falls initialisiert
+        if (window.productCanvas) {
+            window.productCanvas.calcOffset();
+        }
+    } else {
+        console.error('Configurator Modal nicht gefunden!');
+    }
+};
+
+window.closeConfiguratorModal = function () {
+    const modal = document.getElementById('configurator-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+};
+
 document.addEventListener('DOMContentLoaded', function () {
     const canvasElement = document.getElementById('product-canvas');
     if (!canvasElement) return;
@@ -13,9 +37,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const CANVAS_SIZE = 500;
 
     // Feinjustierung basierend auf dem Mockup Bild (Festliche Szene)
-    const BALL_DIAMETER_PX = 310; // Präziser Durchmesser der Kugel im Bild
-    const CENTER_X = 250; // Horizontal zentriert
-    const CENTER_Y = 265; // Vertikal zentriert auf der Kugel (verschoben nach oben)
+    const BALL_DIAMETER_PX = 310;
+    const CENTER_X = 250;
+    const CENTER_Y = 265;
 
     // Canvas Initialisierung
     const canvas = new fabric.Canvas('product-canvas', {
@@ -24,7 +48,10 @@ document.addEventListener('DOMContentLoaded', function () {
         backgroundColor: 'transparent'
     });
 
-    // Clipping Bereich Objekt (45/80 der Kugelgröße)
+    // Globaler Zugriff
+    window.productCanvas = canvas;
+
+    // Clipping Bereich Objekt
     const printAreaPx = (PRINT_AREA_MM / BALL_SIZE_MM) * BALL_DIAMETER_PX;
     const clipCircle = new fabric.Circle({
         radius: printAreaPx / 2,
@@ -46,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
         canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
     });
 
-    // Hilfslinie für den Druckbereich
+    // Hilfslinie
     const guideCircle = new fabric.Circle({
         radius: printAreaPx / 2,
         left: CENTER_X,
@@ -61,10 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     canvas.add(guideCircle);
 
-    // Globaler Zugriff für Debugging/Erweiterungen
-    window.productCanvas = canvas;
-
-    // Text hinzufügen Funktion
+    // Text hinzufügen
     window.addTextToProduct = function (text = 'Dein Text') {
         const color = document.getElementById('text-color-picker').value || '#ffffff';
         const fontFamily = document.getElementById('text-font-family').value || 'Inter';
@@ -83,27 +107,18 @@ document.addEventListener('DOMContentLoaded', function () {
         canvas.setActiveObject(textObj);
     };
 
-    // Live-Updates für selektierte Objekte (Text & Logos)
+    // Filter-Updates für Logos und Text
     document.getElementById('text-color-picker').addEventListener('input', function (e) {
         const activeObject = canvas.getActiveObject();
         if (!activeObject) return;
-
         const color = e.target.value;
 
         if (activeObject.type === 'i-text') {
             activeObject.set('fill', color);
         } else if (activeObject.type === 'image' && activeObject !== canvas.backgroundImage) {
-            // Farbanpassung für monochrome Logos via Filter
             activeObject.filters = [
-                new fabric.Image.filters.RemoveColor({
-                    color: '#FFFFFF',
-                    distance: 0.1
-                }),
-                new fabric.Image.filters.BlendColor({
-                    color: color,
-                    mode: 'tint',
-                    alpha: 1
-                })
+                new fabric.Image.filters.RemoveColor({ color: '#FFFFFF', distance: 0.1 }),
+                new fabric.Image.filters.BlendColor({ color: color, mode: 'tint', alpha: 1 })
             ];
             activeObject.applyFilters();
         }
@@ -118,31 +133,19 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Bild-Upload Funktion (Logo)
+    // Bild-Upload (Logo)
     window.uploadImageToProduct = function (e) {
         const file = e.target.files[0];
         if (!file) return;
-
         const reader = new FileReader();
         reader.onload = function (f) {
-            const data = f.target.result;
-            fabric.Image.fromURL(data, function (img) {
+            fabric.Image.fromURL(f.target.result, function (img) {
                 const color = document.getElementById('text-color-picker').value || '#ffffff';
-
-                // Hintergrund entfernen (Weiß) & Monochrome Färbung
                 img.filters = [
-                    new fabric.Image.filters.RemoveColor({
-                        color: '#FFFFFF',
-                        distance: 0.1 // Schwellenwert für Grautöne/Artefakte
-                    }),
-                    new fabric.Image.filters.BlendColor({
-                        color: color,
-                        mode: 'tint',
-                        alpha: 1
-                    })
+                    new fabric.Image.filters.RemoveColor({ color: '#FFFFFF', distance: 0.1 }),
+                    new fabric.Image.filters.BlendColor({ color: color, mode: 'tint', alpha: 1 })
                 ];
                 img.applyFilters();
-
                 img.scaleToWidth(100);
                 img.set({
                     left: CENTER_X,
@@ -158,71 +161,28 @@ document.addEventListener('DOMContentLoaded', function () {
         reader.readAsDataURL(file);
     };
 
-    // Export Funktion
-    window.exportProductDesign = function () {
-        guideCircle.visible = false;
-        canvas.renderAll();
-        const data = canvas.toDataURL({
-            format: 'png',
-            quality: 1
-        });
-        guideCircle.visible = true;
-        canvas.renderAll();
-        return data;
-    };
-
-    // Modal Steuerung
-    window.openConfiguratorModal = function () {
-        const modal = document.getElementById('configurator-modal');
-        if (modal) {
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Scrollen verhindern
-
-            // Wichtig: Fabric.js muss wissen, dass sich die Position geändert hat
-            if (canvas) {
-                canvas.calcOffset();
-            }
-        }
-    };
-
-    window.closeConfiguratorModal = function () {
-        const modal = document.getElementById('configurator-modal');
-        if (modal) {
-            modal.style.display = 'none';
-            document.body.style.overflow = ''; // Scrollen wieder erlauben
-        }
-    };
-
-    // Schließen bei Klick auf Overlay
-    document.addEventListener('click', function (e) {
-        const modal = document.getElementById('configurator-modal');
-        if (e.target === modal) {
-            closeConfiguratorModal();
-        }
-    });
-
-    // Hilfsfunktionen: Löschen
+    // Hilfsfunktionen
     window.removeSelectedObject = function () {
         const activeObjects = canvas.getActiveObjects();
         if (activeObjects.length > 0) {
             canvas.discardActiveObject();
-            activeObjects.forEach((obj) => {
-                if (obj !== guideCircle) {
-                    canvas.remove(obj);
-                }
-            });
+            activeObjects.forEach(obj => { if (obj !== guideCircle) canvas.remove(obj); });
             canvas.renderAll();
         }
     };
 
     window.clearCanvas = function () {
-        if (confirm('Möchtest du wirklich das gesamte Design löschen?')) {
-            canvas.getObjects().forEach((obj) => {
-                if (obj !== canvas.backgroundImage && obj !== guideCircle) {
-                    canvas.remove(obj);
-                }
+        if (confirm('Design löschen?')) {
+            canvas.getObjects().forEach(obj => {
+                if (obj !== canvas.backgroundImage && obj !== guideCircle) canvas.remove(obj);
             });
             canvas.renderAll();
         }
     };
+
+    // Klick auf Overlay zum Schließen
+    document.addEventListener('click', function (e) {
+        const modal = document.getElementById('configurator-modal');
+        if (e.target === modal) closeConfiguratorModal();
+    });
 });

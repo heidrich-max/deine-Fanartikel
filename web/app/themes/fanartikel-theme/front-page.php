@@ -151,12 +151,14 @@ get_header();
                     <a href="javascript:void(0)" onclick="openConfiguratorModal()" class="btn btn-primary">Zum
                         Konfigurator</a>
                 </div>
-                <div class="konfigurator-image">
-                    <?php get_template_part('template-parts/product/configurator'); ?>
+                <div class="konfigurator-image"
+                    style="background: url('<?php echo get_template_directory_uri(); ?>/assets/images/christmas-ball.png') center/cover; height: 400px; border-radius: 12px;">
+                    <!-- Placeholder/Thumbnail for the modal -->
                 </div>
             </div>
         </div>
     </section>
+    <?php get_template_part('template-parts/product/configurator'); ?>
 
     <!-- Advantages Section -->
     <section class="advantages-section">
