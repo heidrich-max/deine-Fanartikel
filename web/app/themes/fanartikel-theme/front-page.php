@@ -150,14 +150,7 @@ get_header();
                     <a href="#" class="btn btn-primary">Zum Konfigurator</a>
                 </div>
                 <div class="konfigurator-image">
-                    <div class="konfigurator-placeholder">
-                        <svg width="400" height="300" viewBox="0 0 400 300" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <rect width="400" height="300" fill="#f0f0f0" />
-                            <text x="200" y="150" text-anchor="middle" fill="#999" font-size="18">Konfigurator
-                                Vorschau</text>
-                        </svg>
-                    </div>
+                    <?php get_template_part('template-parts/product/configurator'); ?>
                 </div>
             </div>
         </div>

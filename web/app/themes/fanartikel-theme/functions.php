@@ -12,7 +12,8 @@ if (!defined('ABSPATH')) {
 /**
  * Theme setup
  */
-function fanartikel_setup() {
+function fanartikel_setup()
+{
     // Add theme support
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
@@ -24,16 +25,16 @@ function fanartikel_setup() {
         'caption',
     ));
     add_theme_support('custom-logo', array(
-        'height'      => 100,
-        'width'       => 400,
+        'height' => 100,
+        'width' => 400,
         'flex-height' => true,
-        'flex-width'  => true,
+        'flex-width' => true,
     ));
 
     // Register navigation menus
     register_nav_menus(array(
         'primary' => __('Primary Menu', 'fanartikel'),
-        'footer'  => __('Footer Menu', 'fanartikel'),
+        'footer' => __('Footer Menu', 'fanartikel'),
     ));
 }
 add_action('after_setup_theme', 'fanartikel_setup');
@@ -41,7 +42,8 @@ add_action('after_setup_theme', 'fanartikel_setup');
 /**
  * Enqueue scripts and styles
  */
-function fanartikel_scripts() {
+function fanartikel_scripts()
+{
     // Main stylesheet
     wp_enqueue_style(
         'fanartikel-style',
@@ -59,6 +61,30 @@ function fanartikel_scripts() {
         true
     );
 
+    // Fabric.js CDN
+    wp_enqueue_script(
+        'fabric-js',
+        'https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js',
+        array(),
+        '5.3.1',
+        true
+    );
+
+    // Configurator JavaScript
+    wp_enqueue_script(
+        'fanartikel-configurator',
+        get_template_directory_uri() . '/assets/js/configurator.js',
+        array('fabric-js'),
+        '1.0.0',
+        true
+    );
+
+    // Daten für den Konfigurator bereitstellen
+    wp_localize_script('fanartikel-configurator', 'fanartikelConfig', array(
+        'mockupUrl' => get_template_directory_uri() . '/assets/images/christmas-ball.png',
+        'ajaxUrl' => admin_url('admin-ajax.php')
+    ));
+
     // Google Fonts
     wp_enqueue_style(
         'fanartikel-fonts',
@@ -72,15 +98,16 @@ add_action('wp_enqueue_scripts', 'fanartikel_scripts');
 /**
  * Register widget areas
  */
-function fanartikel_widgets_init() {
+function fanartikel_widgets_init()
+{
     register_sidebar(array(
-        'name'          => __('Footer Widget Area', 'fanartikel'),
-        'id'            => 'footer-1',
-        'description'   => __('Add widgets here to appear in your footer.', 'fanartikel'),
+        'name' => __('Footer Widget Area', 'fanartikel'),
+        'id' => 'footer-1',
+        'description' => __('Add widgets here to appear in your footer.', 'fanartikel'),
         'before_widget' => '<div class="footer-widget">',
-        'after_widget'  => '</div>',
-        'before_title'  => '<h3 class="widget-title">',
-        'after_title'   => '</h3>',
+        'after_widget' => '</div>',
+        'before_title' => '<h3 class="widget-title">',
+        'after_title' => '</h3>',
     ));
 }
 add_action('widgets_init', 'fanartikel_widgets_init');
