@@ -19,8 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
         backgroundColor: 'transparent'
     });
 
-    // Clipping Bereich berechnen (45/80 des Mockups)
-    // Wir nehmen an, dass die Kugel das gesamte 500x500 Canvas füllt (zentriert)
+    // Clipping Bereich Objekt (45/80 des Mockups)
     const printAreaPx = (PRINT_AREA_MM / BALL_SIZE_MM) * CANVAS_SIZE;
     const clipCircle = new fabric.Circle({
         radius: printAreaPx / 2,
@@ -30,8 +29,6 @@ document.addEventListener('DOMContentLoaded', function () {
         originY: 'center',
         absolutePositioned: true
     });
-
-    canvas.clipPath = clipCircle;
 
     // Mockup Hintergrund laden
     fabric.Image.fromURL(fanartikelConfig.mockupUrl, function (img) {
@@ -44,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
         canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
     });
 
-    // Hilfslinie für den Druckbereich (optional, nur zur Orientierung)
+    // Hilfslinie für den Druckbereich
     const guideCircle = new fabric.Circle({
         radius: printAreaPx / 2,
         left: CANVAS_SIZE / 2,
@@ -71,10 +68,11 @@ document.addEventListener('DOMContentLoaded', function () {
             left: CANVAS_SIZE / 2,
             top: CANVAS_SIZE / 2,
             fontFamily: fontFamily,
-            fontSize: 30, // Etwas kleinerer Standard
+            fontSize: 30,
             fill: color,
             originX: 'center',
-            originY: 'center'
+            originY: 'center',
+            clipPath: clipCircle
         });
         canvas.add(textObj);
         canvas.setActiveObject(textObj);
@@ -106,12 +104,13 @@ document.addEventListener('DOMContentLoaded', function () {
         reader.onload = function (f) {
             const data = f.target.result;
             fabric.Image.fromURL(data, function (img) {
-                img.scaleToWidth(100); // Standardgröße für den Druckbereich angepasst
+                img.scaleToWidth(100);
                 img.set({
                     left: CANVAS_SIZE / 2,
                     top: CANVAS_SIZE / 2,
                     originX: 'center',
-                    originY: 'center'
+                    originY: 'center',
+                    clipPath: clipCircle
                 });
                 canvas.add(img);
                 canvas.setActiveObject(img);
@@ -122,13 +121,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Export Funktion
     window.exportProductDesign = function () {
-        // Beim Export wollen wir ggf. die Hilfslinie ausblenden
         guideCircle.visible = false;
+        canvas.renderAll();
         const data = canvas.toDataURL({
             format: 'png',
             quality: 1
         });
         guideCircle.visible = true;
+        canvas.renderAll();
         return data;
     };
 
