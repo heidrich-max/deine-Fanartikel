@@ -67,10 +67,19 @@
         padding: 2rem;
         background: #111;
         border-radius: 16px;
-        margin: 2rem 0;
+        margin: 2rem auto;
+        max-width: 800px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .canvas-wrapper {
+        max-width: 100%;
+        height: auto !important;
     }
 
     .canvas-container {
         margin: 0 auto !important;
+        max-width: 100%;
     }
 </style>
