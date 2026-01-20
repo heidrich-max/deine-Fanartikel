@@ -107,34 +107,50 @@ get_header();
     </section>
 
     <!-- Konfigurator Section -->
-    <section id="konfigurator" class="konfigurator-section bg-dark py-5">
-        <div class="container py-lg-5">
-            <div class="row align-items-center">
-                <div class="col-lg-5 mb-5 mb-lg-0">
-                    <div class="konfigurator-text">
-                        <h2 class="text-white mb-4">Online-Konfigurator</h2>
-                        <p class="lead text-white-50 mb-4">Gestalte deine Fanartikel ganz einfach selbst mit unserem
-                            intuitiven Online-Konfigurator.</p>
-                        <ul class="konfigurator-features list-unstyled text-white mb-5">
-                            <li class="mb-3 d-flex align-items-center">
-                                <span class="me-3 text-success">✓</span> Freie Farbwahl
-                            </li>
-                            <li class="mb-3 d-flex align-items-center">
-                                <span class="me-3 text-success">✓</span> Individueller Text
-                            </li>
-                            <li class="mb-3 d-flex align-items-center">
-                                <span class="me-3 text-success">✓</span> Logo-Upload
-                            </li>
-                            <li class="mb-3 d-flex align-items-center">
-                                <span class="me-3 text-success">✓</span> Live-Vorschau
-                            </li>
-                        </ul>
-                    </div>
+    <section id="konfigurator" class="konfigurator-section">
+        <div class="container">
+            <div class="konfigurator-content">
+                <div class="konfigurator-text">
+                    <h2>Online-Konfigurator</h2>
+                    <p>Gestalte deine Fanartikel ganz einfach selbst mit unserem intuitiven Online-Konfigurator.</p>
+                    <ul class="konfigurator-features">
+                        <li>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            Freie Farbwahl
+                        </li>
+                        <li>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            Individueller Text
+                        </li>
+                        <li>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            Logo-Upload
+                        </li>
+                        <li>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            Live-Vorschau
+                        </li>
+                    </ul>
+                    <a href="#" class="btn btn-primary">Zum Konfigurator</a>
                 </div>
-                <div class="col-lg-7">
-                    <div class="konfigurator-app-wrapper">
-                        <?php get_template_part('template-parts/product/configurator'); ?>
-                    </div>
+                <div class="konfigurator-image">
+                    <?php get_template_part('template-parts/product/configurator'); ?>
                 </div>
             </div>
         </div>

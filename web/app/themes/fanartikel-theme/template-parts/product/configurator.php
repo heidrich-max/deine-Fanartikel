@@ -4,57 +4,58 @@
  */
 ?>
 
-<div class="configurator-wrapper d-flex flex-column gap-4">
-    <!-- Canvas Area -->
-    <div class="canvas-container-outer bg-black rounded shadow-lg overflow-hidden border border-secondary"
-        style="margin: 0 auto; max-width: 500px; background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/christmas-bg.png'); background-size: cover; background-position: center;">
+<div class="product-configurator-container">
+    <div class="canvas-wrapper"
+        style="position: relative; width: 500px; height: 500px; margin: 0 auto; background: #1a1a1a; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
         <canvas id="product-canvas"></canvas>
     </div>
 
-    <!-- Controls Area -->
-    <div class="controls-container p-4 bg-dark rounded border border-secondary text-white shadow">
-        <div class="row g-4">
-            <!-- Text Input -->
-            <div class="col-md-6">
-                <h5 class="mb-3 text-uppercase small ls-wide opacity-75">Text Personalisierung</h5>
-                <div class="d-flex flex-column gap-3">
-                    <input type="text" id="custom-text-input" placeholder="Wunschtext hier..."
-                        class="form-control bg-dark border-secondary text-white py-2 px-3">
+    <div class="configurator-controls"
+        style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <!-- Text Steuerung -->
+        <div class="control-group"
+            style="background: #222; padding: 1rem; border-radius: 8px; border: 1px solid #333; flex: 1; min-width: 250px;">
+            <h4 style="margin: 0 0 1rem 0; color: #fff;">Text bearbeiten</h4>
+            <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                <input type="text" id="custom-text-input" placeholder="Text eingeben..."
+                    style="padding: 0.5rem; border-radius: 4px; border: 1px solid #444; background: #333; color: #fff;">
 
-                    <div class="d-flex gap-2 align-items-center">
-                        <input type="color" id="text-color-picker" value="#ffffff"
-                            class="form-control form-control-color bg-transparent border-0" style="width: 50px;">
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <label style="color: #ccc; font-size: 0.8rem;">Farbe:</label>
+                    <input type="color" id="text-color-picker" value="#ffffff"
+                        style="border: none; background: none; width: 40px; height: 30px; cursor: pointer;">
 
-                        <select id="text-font-family" class="form-select bg-dark border-secondary text-white">
-                            <option value="Inter">Standard Font</option>
-                            <option value="Arial">Modern Bold</option>
-                            <option value="Times New Roman">Classic Serif</option>
-                            <option value="Courier New">Retro Type</option>
-                        </select>
-                    </div>
-
-                    <button onclick="addTextToProduct(document.getElementById('custom-text-input').value)"
-                        class="btn btn-primary w-100 py-2 fw-bold text-uppercase">
-                        Text Hinzufügen
-                    </button>
+                    <label style="color: #ccc; font-size: 0.8rem; margin-left: 0.5rem;">Font:</label>
+                    <select id="text-font-family"
+                        style="padding: 0.3rem; background: #333; color: #fff; border: 1px solid #444; border-radius: 4px;">
+                        <option value="Inter">Standard</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Times New Roman">Classic</option>
+                        <option value="Courier New">Typewriter</option>
+                    </select>
                 </div>
+
+                <button onclick="addTextToProduct(document.getElementById('custom-text-input').value)"
+                    class="button primary"
+                    style="background: #2e7d32; color: #fff; border: none; padding: 0.6rem 1rem; border-radius: 4px; cursor: pointer; font-weight: 600;">Text
+                    hinzufügen</button>
             </div>
+        </div>
 
-            <!-- Image Upload & Actions -->
-            <div class="col-md-6">
-                <h5 class="mb-3 text-uppercase small ls-wide opacity-75">Logo / Grafik</h5>
-                <div class="d-flex flex-column gap-3">
-                    <input type="file" id="image-upload" accept="image/*" onchange="uploadImageToProduct(event)"
-                        class="form-control bg-dark border-secondary text-white">
-
-                    <div class="d-flex gap-2 mt-auto">
-                        <button onclick="removeSelectedObject()" class="btn btn-outline-danger flex-grow-1 py-2">
-                            Löschen
-                        </button>
-                        <button onclick="clearCanvas()" class="btn btn-outline-secondary flex-grow-1 py-2">
-                            Alles Leeren
-                        </button>
-                    </div>
+        <!-- Bild Upload -->
+        <div class="control-group"
+            style="background: #222; padding: 1rem; border-radius: 8px; border: 1px solid #333; flex: 1; min-width: 250px;">
+            <h4 style="margin: 0 0 1rem 0; color: #fff;">Grafik hochladen</h4>
+            <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                <input type="file" id="image-upload" accept="image/*" onchange="uploadImageToProduct(event)"
+                    style="color: #ccc; font-size: 0.8rem;">
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                    <button onclick="removeSelectedObject()"
+                        style="background: #c62828; color: #fff; border: none; padding: 0.5rem; border-radius: 4px; cursor: pointer; flex: 1; font-size: 0.8rem;">Selektion
+                        löschen</button>
+                    <button onclick="clearCanvas()"
+                        style="background: #444; color: #fff; border: none; padding: 0.5rem; border-radius: 4px; cursor: pointer; flex: 1; font-size: 0.8rem;">Alles
+                        leeren</button>
                 </div>
             </div>
         </div>
@@ -62,21 +63,14 @@
 </div>
 
 <style>
-    .ls-wide {
-        letter-spacing: 0.1em;
+    .product-configurator-container {
+        padding: 2rem;
+        background: #111;
+        border-radius: 16px;
+        margin: 2rem 0;
     }
 
-    .configurator-wrapper canvas {
-        display: block;
-        max-width: 100%;
-        height: auto !important;
-    }
-
-    .form-control:focus,
-    .form-select:focus {
-        background-color: #222 !important;
-        border-color: #2e7d32;
-        box-shadow: 0 0 0 0.25rem rgba(46, 125, 50, 0.25);
-        color: white;
+    .canvas-container {
+        margin: 0 auto !important;
     }
 </style>
