@@ -7,12 +7,31 @@ document.addEventListener('DOMContentLoaded', function () {
     const canvasElement = document.getElementById('product-canvas');
     if (!canvasElement) return;
 
+    // Konstanten für die Skalierung (in mm)
+    const BALL_SIZE_MM = 80;
+    const PRINT_AREA_MM = 45;
+    const CANVAS_SIZE = 500;
+
     // Canvas Initialisierung
     const canvas = new fabric.Canvas('product-canvas', {
-        width: 500,
-        height: 500,
+        width: CANVAS_SIZE,
+        height: CANVAS_SIZE,
         backgroundColor: 'transparent'
     });
+
+    // Clipping Bereich berechnen (45/80 des Mockups)
+    // Wir nehmen an, dass die Kugel das gesamte 500x500 Canvas füllt (zentriert)
+    const printAreaPx = (PRINT_AREA_MM / BALL_SIZE_MM) * CANVAS_SIZE;
+    const clipCircle = new fabric.Circle({
+        radius: printAreaPx / 2,
+        left: CANVAS_SIZE / 2,
+        top: CANVAS_SIZE / 2,
+        originX: 'center',
+        originY: 'center',
+        absolutePositioned: true
+    });
+
+    canvas.clipPath = clipCircle;
 
     // Mockup Hintergrund laden
     fabric.Image.fromURL(fanartikelConfig.mockupUrl, function (img) {
@@ -25,6 +44,21 @@ document.addEventListener('DOMContentLoaded', function () {
         canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
     });
 
+    // Hilfslinie für den Druckbereich (optional, nur zur Orientierung)
+    const guideCircle = new fabric.Circle({
+        radius: printAreaPx / 2,
+        left: CANVAS_SIZE / 2,
+        top: CANVAS_SIZE / 2,
+        originX: 'center',
+        originY: 'center',
+        fill: 'transparent',
+        stroke: 'rgba(255,255,255,0.3)',
+        strokeDashArray: [5, 5],
+        selectable: false,
+        evented: false
+    });
+    canvas.add(guideCircle);
+
     // Globaler Zugriff für Debugging/Erweiterungen
     window.productCanvas = canvas;
 
@@ -34,10 +68,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const fontFamily = document.getElementById('text-font-family').value || 'Inter';
 
         const textObj = new fabric.IText(text, {
-            left: 250,
-            top: 250,
+            left: CANVAS_SIZE / 2,
+            top: CANVAS_SIZE / 2,
             fontFamily: fontFamily,
-            fontSize: 40,
+            fontSize: 30, // Etwas kleinerer Standard
             fill: color,
             originX: 'center',
             originY: 'center'
@@ -72,10 +106,10 @@ document.addEventListener('DOMContentLoaded', function () {
         reader.onload = function (f) {
             const data = f.target.result;
             fabric.Image.fromURL(data, function (img) {
-                img.scaleToWidth(150);
+                img.scaleToWidth(100); // Standardgröße für den Druckbereich angepasst
                 img.set({
-                    left: 250,
-                    top: 250,
+                    left: CANVAS_SIZE / 2,
+                    top: CANVAS_SIZE / 2,
                     originX: 'center',
                     originY: 'center'
                 });
@@ -86,9 +120,16 @@ document.addEventListener('DOMContentLoaded', function () {
         reader.readAsDataURL(file);
     };
 
-    // Export Funktion (für später)
+    // Export Funktion
     window.exportProductDesign = function () {
-        return canvas.toJSON();
+        // Beim Export wollen wir ggf. die Hilfslinie ausblenden
+        guideCircle.visible = false;
+        const data = canvas.toDataURL({
+            format: 'png',
+            quality: 1
+        });
+        guideCircle.visible = true;
+        return data;
     };
 
     // Hilfsfunktionen: Löschen
@@ -97,7 +138,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (activeObjects.length > 0) {
             canvas.discardActiveObject();
             activeObjects.forEach((obj) => {
-                canvas.remove(obj);
+                if (obj !== guideCircle) {
+                    canvas.remove(obj);
+                }
             });
             canvas.renderAll();
         }
@@ -106,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.clearCanvas = function () {
         if (confirm('Möchtest du wirklich das gesamte Design löschen?')) {
             canvas.getObjects().forEach((obj) => {
-                if (obj !== canvas.backgroundImage) {
+                if (obj !== canvas.backgroundImage && obj !== guideCircle) {
                     canvas.remove(obj);
                 }
             });
