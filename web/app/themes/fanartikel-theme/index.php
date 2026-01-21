@@ -31,7 +31,7 @@ get_header();
             <p><?php _e('Keine Inhalte gefunden.', 'fanartikel'); ?></p>
             <?php
         endif;
-        ?>
+?>
     </div>
 </main>
 

@@ -67,9 +67,9 @@
                             '#000000' => ['name' => 'Schwarz', 'file' => 'black.png'],
                             '#8d6e63' => ['name' => 'Kupfer', 'file' => 'copper.png'],
                             '#fdd835' => ['name' => 'Gelb', 'file' => 'yellow.png'],
-                            '#b2ff59' => ['name' => 'Hellgrün', 'file' => 'lightgreen.png']
+                            '#b2ff59' => ['name' => 'Hellgrün', 'file' => 'lightgreen.png'],
                         ];
-                        foreach ($ball_colors as $hex => $info): ?>
+foreach ($ball_colors as $hex => $info): ?>
                             <div class="color-swatch"
                                 onclick="setBallColor('<?php echo $hex; ?>', '<?php echo $info['file']; ?>')"
                                 title="<?php echo $info['name']; ?>"

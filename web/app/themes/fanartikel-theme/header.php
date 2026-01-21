@@ -24,7 +24,7 @@
                         </a>
                         <?php
                     }
-                    ?>
+?>
                 </div>
 
                 <nav class="main-navigation">
@@ -34,13 +34,13 @@
                         <span></span>
                     </button>
                     <?php
-                    wp_nav_menu(array(
-                        'theme_location' => 'primary',
-                        'menu_id' => 'primary-menu',
-                        'container' => false,
-                        'menu_class' => 'nav-menu',
-                    ));
-                    ?>
+wp_nav_menu([
+    'theme_location' => 'primary',
+    'menu_id' => 'primary-menu',
+    'container' => false,
+    'menu_class' => 'nav-menu',
+]);
+?>
                 </nav>
             </div>
         </div>

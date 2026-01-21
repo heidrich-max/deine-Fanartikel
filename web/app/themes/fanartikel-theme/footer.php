@@ -16,14 +16,14 @@
 
             <nav class="footer-navigation">
                 <?php
-                wp_nav_menu(array(
+                wp_nav_menu([
                     'theme_location' => 'footer',
                     'menu_id' => 'footer-menu',
                     'container' => false,
                     'menu_class' => 'footer-menu',
                     'depth' => 1,
-                ));
-                ?>
+                ]);
+                    ?>
             </nav>
         </div>
 
