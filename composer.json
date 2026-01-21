@@ -43,8 +43,7 @@
     "wpackagist-theme/twentytwentyfive": "^1.0",
     "wpackagist-plugin/woocommerce": "^10.4",
     "wpackagist-plugin/cookie-law-info": "^3.3",
-    "wpackagist-plugin/contact-form-7": "^6.1",
-    "wpackagist-theme/astra": "^4.12"
+    "wpackagist-plugin/contact-form-7": "^6.1"
   },
   "require-dev": {
     "laravel/pint": "^1.18"
