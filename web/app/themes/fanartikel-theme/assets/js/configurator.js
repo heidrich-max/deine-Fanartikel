@@ -227,4 +227,49 @@ document.addEventListener('DOMContentLoaded', function () {
         const modal = document.getElementById('configurator-modal');
         if (e.target === modal) closeConfiguratorModal();
     });
+
+    /**
+     * Produkt mit Design in den Warenkorb legen
+     */
+    window.addToCartWithDesign = function () {
+        const button = document.getElementById('add-to-cart-button');
+        const quantity = document.getElementById('product-quantity').value || 10;
+        const designJson = JSON.stringify(canvas.toJSON());
+
+        // Button-Status ändern
+        const originalText = button.innerText;
+        button.innerText = 'Wird hinzugefügt...';
+        button.disabled = true;
+
+        jQuery.ajax({
+            url: fanartikelConfig.ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'fanartikel_add_to_cart',
+                quantity: quantity,
+                design_json: designJson,
+                product_id: 0 // Wird serverseitig als Fallback ermittelt, falls nicht vorhanden
+            },
+            success: function (response) {
+                if (response.success) {
+                    button.innerText = 'Hinzugefügt!';
+                    button.style.background = '#4ade80';
+
+                    // Optional: Weiterleitung zum Warenkorb
+                    setTimeout(() => {
+                        window.location.href = response.data.cart_url;
+                    }, 800);
+                } else {
+                    alert('Fehler: ' + response.data.message);
+                    button.innerText = originalText;
+                    button.disabled = false;
+                }
+            },
+            error: function () {
+                alert('Ein technischer Fehler ist aufgetreten.');
+                button.innerText = originalText;
+                button.disabled = false;
+            }
+        });
+    };
 });

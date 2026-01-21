@@ -673,13 +673,13 @@ section {
 }
 
 /* Buttons */
-.woocommerce #respond input#submit, 
-.woocommerce a.button, 
-.woocommerce button.button, 
+.woocommerce #respond input#submit,
+.woocommerce a.button,
+.woocommerce button.button,
 .woocommerce input.button,
-.woocommerce #respond input#submit.alt, 
-.woocommerce a.button.alt, 
-.woocommerce button.button.alt, 
+.woocommerce #respond input#submit.alt,
+.woocommerce a.button.alt,
+.woocommerce button.button.alt,
 .woocommerce input.button.alt {
     background-color: var(--color-primary) !important;
     color: white !important;
@@ -689,13 +689,13 @@ section {
     transition: var(--transition) !important;
 }
 
-.woocommerce #respond input#submit:hover, 
-.woocommerce a.button:hover, 
-.woocommerce button.button:hover, 
+.woocommerce #respond input#submit:hover,
+.woocommerce a.button:hover,
+.woocommerce button.button:hover,
 .woocommerce input.button:hover,
-.woocommerce #respond input#submit.alt:hover, 
-.woocommerce a.button.alt:hover, 
-.woocommerce button.button.alt:hover, 
+.woocommerce #respond input#submit.alt:hover,
+.woocommerce a.button.alt:hover,
+.woocommerce button.button.alt:hover,
 .woocommerce input.button.alt:hover {
     background-color: var(--color-primary-dark) !important;
     transform: translateY(-2px) !important;
@@ -736,7 +736,9 @@ section {
 }
 
 /* Messaging */
-.woocommerce-message, .woocommerce-info, .woocommerce-error {
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error {
     border-top-color: var(--color-primary) !important;
     background-color: var(--color-bg-light) !important;
     border-radius: var(--radius-sm) !important;
@@ -744,4 +746,20 @@ section {
 
 .woocommerce-message::before {
     color: var(--color-primary) !important;
+}
+
+/* WooCommerce Configurator Integration */
+#add-to-cart-button:hover {
+    background: #2e7d32 !important;
+}
+
+#product-quantity:focus {
+    outline: none;
+    border-color: #2e7d32 !important;
+    box-shadow: 0 0 5px rgba(46, 125, 50, 0.3);
+}
+
+.configurator-controls .control-group label {
+    font-size: 0.85rem;
+    color: #aaa;
 }

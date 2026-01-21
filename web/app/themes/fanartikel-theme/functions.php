@@ -166,3 +166,44 @@ add_action('woocommerce_checkout_create_order_line_item', function ($item, $cart
         $item->add_meta_data('_fanartikel_design', $values['fanartikel_design']);
     }
 }, 10, 4);
+
+/**
+ * AJAX-Handler für den Warenkorb
+ */
+function fanartikel_ajax_add_to_cart()
+{
+    $product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
+    $quantity = isset($_POST['quantity']) ? absint($_POST['quantity']) : 1;
+    $design_json = isset($_POST['design_json']) ? stripslashes($_POST['design_json']) : '';
+
+    if (!$product_id) {
+        // Fallback: Suche nach dem ersten Produkt, falls keine ID übergeben wurde
+        $products = wc_get_products(array('limit' => 1));
+        if (!empty($products)) {
+            $product_id = $products[0]->get_id();
+        }
+    }
+
+    if ($product_id) {
+        $cart_item_data = array();
+        if ($design_json) {
+            $cart_item_data['fanartikel_design'] = $design_json;
+            // Einzigartiger Key für unterschiedliche Designs
+            $cart_item_data['unique_key'] = md5($design_json . microtime());
+        }
+
+        $passed_validation = apply_filters('woocommerce_add_to_cart_validation', true, $product_id, $quantity);
+        $cart_item_key = WC()->cart->add_to_cart($product_id, $quantity, 0, array(), $cart_item_data);
+
+        if ($passed_validation && $cart_item_key) {
+            wp_send_json_success(array(
+                'message' => __('Produkt erfolgreich hinzugefügt', 'fanartikel'),
+                'cart_url' => wc_get_cart_url()
+            ));
+        }
+    }
+
+    wp_send_json_error(array('message' => __('Fehler beim Hinzufügen zum Warenkorb', 'fanartikel')));
+}
+add_action('wp_ajax_fanartikel_add_to_cart', 'fanartikel_ajax_add_to_cart');
+add_action('wp_ajax_nopriv_fanartikel_add_to_cart', 'fanartikel_ajax_add_to_cart');

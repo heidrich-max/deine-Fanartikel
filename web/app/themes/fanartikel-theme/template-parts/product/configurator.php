@@ -69,7 +69,7 @@
                             '#fdd835' => ['name' => 'Gelb', 'file' => 'yellow.png'],
                             '#b2ff59' => ['name' => 'Hellgrün', 'file' => 'lightgreen.png'],
                         ];
-foreach ($ball_colors as $hex => $info): ?>
+                        foreach ($ball_colors as $hex => $info): ?>
                             <div class="color-swatch"
                                 onclick="setBallColor('<?php echo $hex; ?>', '<?php echo $info['file']; ?>')"
                                 title="<?php echo $info['name']; ?>"
@@ -79,14 +79,30 @@ foreach ($ball_colors as $hex => $info): ?>
                     </div>
                 </div>
 
-                <!-- Bild Upload -->
+                <!-- Bild Upload & Warenkorb -->
                 <div class="control-group"
                     style="background: #222; padding: 1rem; border-radius: 8px; border: 1px solid #333; flex: 1; min-width: 250px;">
-                    <h4 style="margin: 0 0 1rem 0; color: #fff;">Grafik hochladen</h4>
+                    <h4 style="margin: 0 0 1rem 0; color: #fff;">Grafik & Warenkorb</h4>
                     <div style="display: flex; flex-direction: column; gap: 0.8rem;">
                         <input type="file" id="image-upload" accept="image/*" onchange="uploadImageToProduct(event)"
                             style="color: #ccc; font-size: 0.8rem;">
-                        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+
+                        <div style="padding: 1rem 0; border-top: 1px solid #333; margin-top: 0.5rem;">
+                            <label
+                                style="color: #fff; display: block; margin-bottom: 0.5rem; font-weight: 600;">Bestellmenge:</label>
+                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                <input type="number" id="product-quantity" value="10" min="1" step="1"
+                                    style="width: 80px; padding: 0.5rem; border-radius: 4px; border: 1px solid #444; background: #333; color: #fff;">
+                                <span style="color: #ccc; font-size: 0.8rem;">Stück</span>
+                            </div>
+                        </div>
+
+                        <button id="add-to-cart-button" onclick="addToCartWithDesign()"
+                            style="background: #1a4d2e; color: #fff; border: none; padding: 1rem; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 700; font-size: 1rem; transition: background 0.2s; margin-bottom: 0.5rem;">
+                            In den Warenkorb
+                        </button>
+
+                        <div style="display: flex; gap: 0.5rem;">
                             <button onclick="removeSelectedObject()"
                                 style="background: #c62828; color: #fff; border: none; padding: 0.5rem; border-radius: 4px; cursor: pointer; flex: 1; font-size: 0.8rem;">Selektion
                                 löschen</button>

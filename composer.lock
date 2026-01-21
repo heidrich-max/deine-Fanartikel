@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47cc1707ee095677dd192334d84e407d",
+    "content-hash": "5de5be56ded6e8631939d243b290500a",
     "packages": [
         {
             "name": "composer/installers",
@@ -1049,6 +1049,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/cookie-law-info/"
+        },
+        {
+            "name": "wpackagist-plugin/tier-pricing-table",
+            "version": "5.5.1",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/tier-pricing-table/",
+                "reference": "tags/5.5.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/tier-pricing-table.5.5.1.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/tier-pricing-table/"
         },
         {
             "name": "wpackagist-plugin/woocommerce",
